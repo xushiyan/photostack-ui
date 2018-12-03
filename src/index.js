@@ -1,9 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Amplify from 'aws-amplify';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+
+Amplify.configure({
+  API: {
+    endpoints: [{
+      name: 'photos',
+      endpoint: 'https://ievwidpg2g.execute-api.ap-southeast-1.amazonaws.com/Prod',
+      region: 'ap-southeast-1',
+    }]
+  },
+});
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
