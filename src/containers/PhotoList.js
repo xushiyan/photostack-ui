@@ -1,49 +1,34 @@
+import _ from 'lodash';
 import React from 'react';
-import { API } from 'aws-amplify';
+import { connect } from 'react-redux';
 import { CardColumns } from 'reactstrap';
+import { listPhotos as listPhotosAction } from '../actions/photos';
 import PhotoCard from './PhotoCard';
 
 class PhotoList extends React.Component {
-  static getPhotos = () => API.get('photos', '/photos');
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      photos: null,
-    };
-  }
-
-  async componentDidMount() {
-    let photos;
-    try {
-      const resp = await PhotoList.getPhotos();
-      photos = resp.items.map(item => ({
-        imgURL: `https://s3-ap-southeast-1.amazonaws.com/rxu-photostack-api-photostorage/${
-          item.img
-        }`,
-        ...item,
-      }));
-    } catch (e) {
-      alert(e);
-    } finally {
-      this.setState({
-        photos,
-      });
-    }
+  componentDidMount() {
+    const { listPhotos } = this.props;
+    listPhotos();
   }
 
   render() {
-    const { photos } = this.state;
+    const { photos } = this.props;
     return (
       <CardColumns>
-        {' '}
-        {Array.isArray(photos) &&
-          !!photos.length &&
-          photos.map(photo => <PhotoCard key={photo.id} photo={photo} />)}{' '}
+        {!_.isEmpty(photos) && photos.map(photo => <PhotoCard key={photo.id} photo={photo} />)}
       </CardColumns>
     );
   }
 }
-
-export default PhotoList;
+const mapStateToProps = ({ photos }) => {
+  const sortedPhotos = _.orderBy(photos, ['updTs'], ['desc']);
+  return {
+    photos: sortedPhotos,
+  };
+};
+export default connect(
+  mapStateToProps,
+  {
+    listPhotos: listPhotosAction,
+  }
+)(PhotoList);

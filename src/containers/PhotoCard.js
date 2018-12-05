@@ -1,21 +1,12 @@
 import React from 'react';
-import { API } from 'aws-amplify';
 import { Button, Card, CardImg, CardTitle, CardBody } from 'reactstrap';
+import { connect } from 'react-redux';
+import { deletePhoto as deletePhotoAction } from '../actions/photos';
 
 class PhotoCard extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.deletePhoto.bind(this);
-  }
-
-  deletePhoto = () => {
-    const { photo } = this.props;
-    return API.del('photos', '/photos', {
-      body: {
-        id: photo.id,
-      },
-    }).then();
+  performDeletePhoto = () => {
+    const { photo, deletePhoto } = this.props;
+    deletePhoto(photo.id);
   };
 
   render() {
@@ -24,15 +15,19 @@ class PhotoCard extends React.Component {
       <Card>
         <CardImg top width="100%" src={photo.imgURL} alt="Card image cap" />
         <CardBody>
-          <CardTitle> {photo.title} </CardTitle>{' '}
-          <Button color="danger" onClick={this.deletePhoto}>
-            {' '}
-            X{' '}
-          </Button>{' '}
-        </CardBody>{' '}
+          <CardTitle>{photo.title}</CardTitle>
+          <Button color="danger" onClick={this.performDeletePhoto}>
+            delete
+          </Button>
+        </CardBody>
       </Card>
     );
   }
 }
 
-export default PhotoCard;
+export default connect(
+  null,
+  {
+    deletePhoto: deletePhotoAction,
+  }
+)(PhotoCard);
