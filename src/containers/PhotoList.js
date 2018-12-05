@@ -11,7 +11,7 @@ class PhotoList extends React.Component {
 
     this.state = {
       photos: null,
-    }
+    };
   }
 
   async componentDidMount() {
@@ -19,13 +19,17 @@ class PhotoList extends React.Component {
     try {
       const resp = await PhotoList.getPhotos();
       photos = resp.items.map(item => ({
-        imgURL: `https://s3-ap-southeast-1.amazonaws.com/rxu-photostack-api-photostorage/${item.img}`,
-        ...item
+        imgURL: `https://s3-ap-southeast-1.amazonaws.com/rxu-photostack-api-photostorage/${
+          item.img
+        }`,
+        ...item,
       }));
     } catch (e) {
       alert(e);
     } finally {
-      this.setState({ photos });
+      this.setState({
+        photos,
+      });
     }
   }
 
@@ -33,10 +37,10 @@ class PhotoList extends React.Component {
     const { photos } = this.state;
     return (
       <CardColumns>
-        {
-          Array.isArray(photos) && !!photos.length && 
-          photos.map(photo => <PhotoCard key={photo.id} photo={photo} />)
-        }
+        {' '}
+        {Array.isArray(photos) &&
+          !!photos.length &&
+          photos.map(photo => <PhotoCard key={photo.id} photo={photo} />)}{' '}
       </CardColumns>
     );
   }

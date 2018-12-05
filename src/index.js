@@ -8,11 +8,13 @@ import * as serviceWorker from './serviceWorker';
 
 Amplify.configure({
   API: {
-    endpoints: [{
-      name: 'photos',
-      endpoint: 'https://ievwidpg2g.execute-api.ap-southeast-1.amazonaws.com/Prod',
-      region: 'ap-southeast-1',
-    }]
+    endpoints: [
+      {
+        name: 'photos',
+        endpoint: 'https://ievwidpg2g.execute-api.ap-southeast-1.amazonaws.com/Prod',
+        region: 'ap-southeast-1',
+      },
+    ],
   },
 });
 

@@ -12,9 +12,11 @@ class PhotoCard extends React.Component {
   deletePhoto = () => {
     const { photo } = this.props;
     return API.del('photos', '/photos', {
-      body: { id: photo.id }
+      body: {
+        id: photo.id,
+      },
     }).then();
-  }
+  };
 
   render() {
     const { photo } = this.props;
@@ -22,9 +24,12 @@ class PhotoCard extends React.Component {
       <Card>
         <CardImg top width="100%" src={photo.imgURL} alt="Card image cap" />
         <CardBody>
-          <CardTitle>{photo.title}</CardTitle>
-          <Button color="danger" onClick={this.deletePhoto}>X</Button>
-        </CardBody>
+          <CardTitle> {photo.title} </CardTitle>{' '}
+          <Button color="danger" onClick={this.deletePhoto}>
+            {' '}
+            X{' '}
+          </Button>{' '}
+        </CardBody>{' '}
       </Card>
     );
   }
